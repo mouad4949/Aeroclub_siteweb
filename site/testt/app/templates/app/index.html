@@ -1,0 +1,676 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <!--font-family-->
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        
+        <!-- title of site -->
+        <title>Royal Aeroclub de Casablanca</title>
+
+        <!-- For favicon png -->
+		
+       
+        <!--font-awesome.min.css-->
+		<!--animate.css-->
+        {% load static %}
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/linearicons.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+		<!--flaticon.css-->
+        <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+
+		<!--slick.css-->
+        <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+		<link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+		
+        <!--bootstrap.min.css-->
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="{% static 'css/bootsnav.css' %}" >	
+        
+        <!--style.css-->
+        
+        
+        <!--responsive.css-->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+        
+		<style>
+		/* Container for the testimonial section */
+.pilotes {
+    padding: 117px 0 75px;
+}
+
+/* Container for the content within the testimonial section */
+.pilotes-content {
+    margin-top: 36px;
+}
+
+/* Styling for each testimonial box */
+.single-testimonial-box {
+    padding: 50px 30px;
+    box-shadow: 0 0 5px rgba(71, 71, 71, 0.2);
+    overflow-x: hidden;
+    transition: 0.3s;
+    width: 100%; /* Ensure each box takes full width */
+    height: 100%; /* Optional: Ensure each box has equal height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.single-testimonial-box:hover {
+    box-shadow: 0 10px 20px rgba(21, 19, 19, 0.2);
+}
+
+/* Ensure the current active box has a slightly different shadow */
+.slick-current .single-testimonial-box {
+    box-shadow: 0 10px 20px rgba(21, 19, 19, 0.2);
+}
+
+/* Container for the description of the testimonial */
+.testimonial-description {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styling for the image container */
+.testimonial-img {
+    width: 160px; /* Augmenter la largeur de l'image */
+    height: 120px; /* Augmenter la hauteur de l'image */
+    margin-right: 15px; /* Espacement entre l'image et le texte */
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.testimonial-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* Styling for the person information */
+.testimonial-person {
+    margin-top: 11px;
+    text-align: center;
+}
+
+.testimonial-person h2 {
+    color: #505866;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.testimonial-person h4 {
+    color: #a2a5ab;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Styling for the star rating */
+.testimonial-person-star {
+    margin-top: 10px;
+}
+
+.testimonial-person-star i {
+    color: #ffda2b;
+    margin: 0 2px;
+}
+
+/* Styling for the comment text */
+.testimonial-comment {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.testimonial-comment p {
+    color: #8d939e;
+    font-size: 14px;
+    font-weight: 300;
+}
+.blog {
+    padding: 120px 0 90px;
+}
+
+.blog-content {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the cards */
+}
+
+.single-blog-item {
+    margin: 30px; /* Margin for spacing between cards */
+    box-shadow: 0 0px 5px rgba(71, 71, 71, .2);
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    width: 300px; /* Fixed width for each card */
+    height: 450px; /* Set a fixed height for the card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.single-blog-item-txt {
+    padding: 25px 28px 27px;
+}
+
+.single-blog-item-txt h2 a {
+    text-transform: initial;
+    line-height: 1.8;
+}
+
+.single-blog-item-txt h4 {
+    font-size: 14px;
+    color: #8f949d;
+    font-weight: 400;
+   
+}
+
+.single-blog-item-txt h4 a {
+    font-size: 14px;
+    padding-right: 14px;
+    border-right: 1px solid #dde0e4;
+    margin-right: 15px;
+    text-transform: uppercase;
+}
+
+.single-blog-item:hover h2 a {
+    color: #ff545a;
+}
+
+.single-blog-item:hover {
+    box-shadow: 0 10px 20px rgba(21, 19, 19, .4);
+}
+
+.single-blog-item-img img {
+    width: 100%;
+    height: 200px; /* Set a fixed height for the images */
+    object-fit: cover; /* Ensure the image covers the area while maintaining its aspect ratio */
+}
+
+.avion {
+    padding: 117px 0 95px;
+    background: #f8fafb;
+}
+
+.avion-content {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the cards */
+}
+
+.single-avion-item {
+    background: #fff;
+    border: 1px solid #edeff1;
+    border-radius: 3px;
+    margin: 15px; /* Margin for spacing between cards */
+    box-shadow: 0 0px 5px rgba(71, 71, 71, .2);
+    -webkit-transition: .3s linear;
+    -moz-transition: .3s linear;
+    -ms-transition: .3s linear;
+    -o-transition: .3s linear;
+    transition: .3s linear;
+    width: 300px; /* Fixed width for each card */
+    height: 550px; /* Set a fixed height for the card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.single-avion-txt {
+    padding: 26px 25px 24px 15px;
+}
+
+.single-avion-txt.bg-theme-1 .avion-rating { background: #70a9ff; }
+.single-avion-txt.bg-theme-2 .avion-rating { background: #00c61c; }
+.single-avion-txt.bg-theme-3 .avion-rating { background: #ffcc5d; }
+.single-avion-txt.bg-theme-4 .avion-rating { background: #bd70ff; }
+.single-avion-txt.bg-theme-5 .avion-rating { background: #ff7a40; }
+
+.avion-rating-price {
+    font-size: 12px;
+    color: #777f85;
+    text-transform: capitalize;
+    font-weight: 400;
+    margin: 15px 0 20px;
+}
+
+.avion-rating {
+    display: inline-block;
+    width: 32px;
+    height: 20px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.avion-price { color: #f63138; }
+
+.avion-price-box {
+    display: inline-block;
+    padding: 0 10px;
+    margin: 0 8px;
+    border-left: 1px solid #dde0e4;
+    border-right: 1px solid #dde0e4;
+}
+
+.avion-open-close-part {
+    margin-top: auto;
+}
+
+.cardavi img {
+    width: 100%;
+    height: 200px; /* Set a fixed height for the images */
+    object-fit: cover; /* Ensure the image covers the area while maintaining its aspect ratio */
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+    </style>
+    </head>
+	
+	<body>
+
+	<section class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+                <div class="container">
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                        <!-- <img src="assets/images/aerro.png" alt="Aeroclub Casablanca" height="70" width="100" class="navbar-brand-img"> -->
+                        <a class="navbar-brand">Aeroclub<span >Casablanca</span></a>
+                    </div><!--/.navbar-header-->
+                    <!-- End Header Navigation -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class="scroll active"><a href="#home">home</a></li>						
+							<li class="scroll"><a href="#licence">Licence</a></li>
+                            <li class="scroll"><a href="#services">Services</a></li>
+                            <li class="scroll"><a href="#avions">Avions</a></li>
+                            <li class="scroll"><a href="#pilotes">Pilotes</a></li>
+                            <li class="scroll"><a href="#blog">Actualités</a></li>
+                            <li class="scroll"><a href="#contact">contact</a></li>
+                            <li><a href="../login/login.php">Reserver</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div><!--/.header-area-->
+        <div class="clearfix"></div>
+    </section>
+
+    <section id="home" class="welcome-hero">
+        <div class="container">
+            <div class="welcome-hero-txt">
+                <h2>Aéroclub de Casablanca vous offre </h2>
+                <p>une expérience immense pour explorer le monde de l'aviation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="services-wrapper">
+            <div class="cards-container">
+                <div class="service-card">
+                    <div class="card-icon">
+                        <img src="../../static/images/pilotage.png" alt="" height="35" width="35">
+                    </div>
+                    <div class="card-body">
+                        <h3>Ecole de pilotage</h3>
+                        <p>Profitez de notre programme de formation homologué pour obtenir votre Licence de Pilote Privé.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-icon">
+                        <img src="../../static/images/avion.png" alt="Spa Icon" height="35" width="35">
+                    </div>
+                    <div class="card-body">
+                        <h3>Baptêmes de l'Air.</h3>
+                        <p>Profitez d'un vol de découverte ou d'un vol d'initiation avec l'Aéroclub Royal de Casablanca. </p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-icon">
+                        <img src="../../static/images/avion-noir.png" alt="Spa Icon" height="35" width="35">
+                    </div>
+                    <div class="card-body">
+                        <h3>
+						Location Aéronefs</h3>
+                        <p>Notre flotte d'aéronefs est entretenue selon les normes les plus rigoureuses.</p>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.services-wrapper-->
+    </section>
+	<main id="licence">
+	<div class="contentlic">
+		<div style="margin-left:80px">
+			<h1>Licence Pilote Privé </h1>
+			
+			<h2>La formation Pratique:</h2>
+			<br>
+			<div class="highlight" >
+				<p>
+					Il est nécessaire de suivre une formation minimale réglementaire comprenant 40 heures de vol, dont au moins 30 heures de vol à double commande (avec un instructeur), 10 heures de vol solo (seul à bord) avec au moins 5 heures de navigation et une navigation sur une distance supérieure à 150 nm.
+				</p>
+			</div >
+			<h2>La formation théorique:</h2>
+			<br>
+			<div class="highlight" >
+			
+			<p>
+				L'obtention de la licence PPL nécessite un programme de formation théorique comprenant au moins 146 heures d'enseignement réelles, qui peut inclure le travail en classe, des vidéos, des séances d'études individuelles, de l'enseignement assisté par ordinateur et d'autres moyens admis par la DAC.
+			</p>
+			</div>
+		</div>
+    </div>
+	</div>
+	</main>
+
+<!--services start -->
+<div id="services">
+	<div class="section-header">
+		<h2>NOS Services!</h2>
+		<p>En savoir plus sur ce que notre Aeroclub vous offre</p>
+	</div>
+	<section class="services">
+					
+		<div class="cardserv-container">
+			<div class="cardserv">
+				<img src="../../static/images/vol_decouverte.jpg" alt="Card Image 1">
+				<div class="cardserv-body">
+					<h3 class="cardserv-title">VOL DE DECOUVERTE</h3>
+					<p class="cardserv-text">Explorez la zone de Casablanca-Tit Melil,Le vol de baptême sera réalisé par un pilote d'avion expérimenté et compétent.En seulement 30 minutes de vol, vous pourrez admirer des magnifiques panoramas de Casablanca en vue depuis le ciel.Vous quittez avec une multitude de souvenirs.</p>
+					<a href="#">Learn More</a>
+				</div>
+			</div>
+			<div class="cardserv">
+				<img src="../../static/images/vol_initiation.jpg" alt="Card Image 2">
+				<div class="cardserv-body">
+					<h3 class="cardserv-title">VOL D'INITIATION</h3>
+					<p class="cardserv-text">Le vol d'initiation vous donne la possibilité de prendre les commandes d'un avion à votre arrivée en compagnie d'un instructeur.Après 45 minutes de cours au sol, embarquez pour un vol de 30 minutes qui se déroulera de la manière suivante :
+					Introduction générale de l'avion. Introduction générale de l'équipement à bord. Introduction à la manipulation de l'avion au sol. Introduction au déroulement du vol. Décollage, vol horizontal, virages, descente et atterrisage.</p>
+					<a href="#">Learn More</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<!--services end -->
+
+		<!--avions start -->
+		<section id="avions" class="avion">
+			<div class="container">
+				<div class="section-header">
+					<h2>explorer</h2>
+					<p>Explorez les différents types d'avions disponibles afin de satisfaire vos besoins et vos préférences.</p>
+				</div><!--/.section-header-->
+				<div class="avion-content">
+					<div class="row">
+                        {% for Avion in av%}
+						<div class=" col-md-4 col-sm-6">
+							<div class="single-avion-item">
+								<div class="cardavi img">
+                                    
+									<img src="../../static/images/{{ Avion.image }}" alt="{{ Avion.image }}">
+								</div>
+								<div class="single-avion-txt bg-theme-1">
+									<h2>{{ Avion.nom }}</h2>
+									<p class="avion-rating-price">
+										<span class="avion-rating">{{ Avion.Rating }}</span>
+										
+										<span class="avion-price-box">
+											Nombres de places:
+											<span class="avion-price">{{ Avion.Nombres_de_places }}</span>
+										</span>
+										
+									</p>
+									<div>
+										<div class="row">	
+											<div class="col-sm-10">
+												<p>
+													{{ Avion.description }}
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="avion-open-close-part">
+										<div class="row">
+											<div class="col-sm-5">
+												<p class="close-btn open-btn" >{{ Avion.status }}</p>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						{% endfor %}
+					</div>
+			 	</div><!--/.container-->
+			</div>
+		</section><!--/.avions-->
+		<!--avions end -->
+
+		<!--pilotes start -->
+		<section id="pilotes" class="pilotes">
+			<div class="section-header">
+				<h2>Notre équipe</h2>
+				<p>des pilotes expérimentés et passionnés</p>
+			</div><!--/.section-header-->
+			<div class="pilotes-content">
+				<div class="testimonial-carousel">
+                    {% for pilote in prof %}
+                        <div class="single-testimonial-box"><!--qui signifie chaque slider!-->
+                            <div class="testimonial-description">
+                                <div class="testimonial-info">
+                                    <div class="testimonial-img">
+                                        <img src="../../static/images/{{ pilote.image }}" alt="clients">
+                                    </div><!--/.testimonial-img-->
+                                    <div class="testimonial-person">
+                                        <h2>{{ pilote.prenom }} {{ pilote.Nom }}</h2>
+                                        <h4>{{ pilote.type_pilote }}</h4>
+                                        <div class="testimonial-person-star">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div><!--/.testimonial-person-->
+                                </div><!--/.testimonial-info-->
+                                <div class="testimonial-comment">
+                                    <p>
+                                        {{ pilote.type_pilote_licencie }}
+                                    </p>
+                                </div><!--/.testimonial-comment-->
+                            </div><!--/.testimonial-description-->
+                        </div><!--/.single-testimonial-box-->
+                    {% endfor %}
+				</div>
+			</div>
+
+		</section><!--/.pilotes-->
+		<!--pilotes end -->
+
+		<!-- statistics start -->
+		<section id="statistics"  class="statistics">
+			<div class="container">
+				<div class="statistics-counter"> 
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{ avions_count }} </div> <span></span>
+							</div><!--/.statistics-content-->
+							<h3>Avions</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{ pilotes_count }}</div> <span></span>
+							</div><!--/.statistics-content-->
+							<h3>Pilotes</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">150</div> <span>+</span>
+							</div><!--/.statistics-content-->
+							<h3>Visiteurs</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">130</div> <span>+</span>
+							</div><!--/.statistics-content-->
+							<h3>Clients Heureux</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+				</div><!--/.statistics-counter-->	
+			</div><!--/.container-->
+
+		</section><!--/.counter-->	
+		<!-- statistics end -->
+
+		<!--blog start -->
+		
+        <section id="blog" class="blog">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Nos Actualités</h2>
+                    <p>Toujours au courant de nos dernières nouvelles.</p>
+                </div><!--/.section-header-->
+                <div class="blog-content">
+                    {% for news in actualité %}
+                        <div class="single-blog-item"><!--chaque card!-->
+                            <div class="single-blog-item-img">
+                                <img src="../../static/images/{{ news.image }}" alt="blog image">
+                            </div>
+                            <div class="single-blog-item-txt">
+                                
+                                <h4>posté <span>en</span> {{ news.date }}</h4>
+                                <p>{{ news.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div><!--/.container-->
+        </section><!--/.blog-->
+        <!--blog end -->
+        
+        
+
+		
+
+		<!--footer start-->
+		<footer id="contact"  class="footer">
+			<div class="container">
+				<div class="footer-menu">
+		           	<div class="row">
+			           	<div class="col-sm-3">
+			           		 <div class="navbar-header">
+				                <a class="navbar-brand" href="index.html">Aeroclub<span>Casablanca</span></a>
+				            </div><!--/.navbar-header-->
+			           	</div>
+			           	<div class="col-sm-9">
+			           		<ul class="footer-menu-item">				
+								<li class="scroll"><a href="#licence">Licence</a></li>
+								<li class="scroll"><a href="#services">Services</a></li>
+								<li class="scroll"><a href="#avions">Avions</a></li>
+								<li class="scroll"><a href="#pilotes">Pilotes</a></li>
+								<li class="scroll"><a href="#blog">Actualités</a></li>
+								<li class="scroll"><a href="#contact">contact</a></li>
+								<li><a href="../login/login.php">Reserver</a></li>
+							 </ul><!--/.nav -->
+			           	</div>
+		           </div>
+				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-5">
+							<p>
+								&copy;copyright. designé et developpé par un etudiant LSI.
+							</p><!--/p-->
+						</div>
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<span><i class="fa fa-phone"> 0612345678</i></span>
+								<a href="https://web.facebook.com/AeroClubRoyalDeCasablanca"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<!--footer end-->
+		
+		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+    	<script src="{% load static %}"></script>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Modernizr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS files -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootsnav.js' %}"></script>
+<script src="{% static 'js/feather.min.js' %}"></script>
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    </body>
+	
+</html>
+
+
