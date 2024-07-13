@@ -10,7 +10,8 @@ def create_profile_and_membership(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
 
 @receiver(post_save, sender=Profile)
 def create_or_update_membership(sender, instance, created, **kwargs):

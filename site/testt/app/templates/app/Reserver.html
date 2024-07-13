@@ -1,0 +1,37 @@
+{% extends "app/base.html" %}
+
+{% block title %}Reserver{% endblock %}
+
+{% block content %}
+    <div class="register-container">
+        <h2 class="register-title">Reserver</h2>
+        <form method="POST" class="form-group register-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p id="prix-reservation">Prix de la réservation dh: {{ form.initial.prix }} </p>
+            <button type="submit" class="btn btn-success register-button">Reserver</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function updatePrice() {
+        var typeReservation = document.getElementById('id_type_reservation').value;
+        var prix = 0;  // Initialisez le prix selon votre logique
+
+        // Mettez à jour le prix en fonction du type de réservation sélectionné
+        if (typeReservation === 'vol d initiation') {
+            prix = 1200;  // Prix pour vol d'initiation
+        } else if (typeReservation === 'vol decouverte') {
+            prix = 2000;  // Prix pour vol découverte
+        }
+
+        // Mettre à jour l'affichage du prix
+        document.getElementById('prix-reservation').textContent = 'Prix de la réservation : ' + prix;
+    }
+
+    // Appeler la fonction pour initialiser le prix au chargement de la page
+    updatePrice();
+</script>
+{% endblock %}

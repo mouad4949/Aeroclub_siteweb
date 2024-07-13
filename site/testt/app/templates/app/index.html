@@ -308,6 +308,7 @@
                     <!-- End Header Navigation -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        {% if user.is_authenticated %}
                         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                             <li class="scroll active"><a href="#home">home</a></li>						
 							<li class="scroll"><a href="#licence">Licence</a></li>
@@ -316,8 +317,23 @@
                             <li class="scroll"><a href="#pilotes">Pilotes</a></li>
                             <li class="scroll"><a href="#blog">Actualités</a></li>
                             <li class="scroll"><a href="#contact">contact</a></li>
-                            <li><a href="../login/login.php">Reserver</a></li>
-                        </ul>
+                            <li class="scroll"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                            <li><a href="{% url 'reserver' %}">Reserver</a></li>
+                        </ul>    
+        {% else %}
+        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+            <li class="scroll active"><a href="#home">home</a></li>						
+            <li class="scroll"><a href="#licence">Licence</a></li>
+            <li class="scroll"><a href="#services">Services</a></li>
+            <li class="scroll"><a href="#avions">Avions</a></li>
+            <li class="scroll"><a href="#pilotes">Pilotes</a></li>
+            <li class="scroll"><a href="#blog">Actualités</a></li>
+            <li class="scroll"><a href="#contact">contact</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+        </ul>
+        {% endif %}
+                            
+                        
                     </div>
                 </div>
             </nav>
@@ -668,6 +684,19 @@
 <script src="{% static 'js/slick.min.js' %}"></script>
 <script src="{% static 'js/custom.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+ <script>
+        $(document).ready(function() {
+            $('a').each(function() {
+                console.log($(this).attr('href'));
+            });
+
+            $('a[href="{% url 'logout' %}"]').on('click', function(e) {
+                e.preventDefault();
+                console.log('Logout link clicked');
+                window.location.href = $(this).attr('href');
+            });
+        });
+    </script>
 
     </body>
 	

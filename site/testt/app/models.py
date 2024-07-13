@@ -72,3 +72,28 @@ class Membership(models.Model):
     
     def __str__(self):
         return f'Membership for {self.profile.user.username}'
+    
+class Reservation(models.Model):
+    TYPE_RESERVATION = [
+        ('vol d initiation', 'VOL D INITIATION'),
+        ('vol decouverte', 'VOL DECOUVERTE'),
+    ]
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)  # Utilisez ForeignKey au lieu de OneToOneField
+    type_reservation=models.CharField(max_length=80,choices=TYPE_RESERVATION)
+    prix=models.IntegerField()
+    date = models.DateTimeField(unique=True)
+
+
+    def __str__(self):
+        return self.profile.user.username
+
+class Services(models.Model):
+    TYPE_SERVICE= [
+        ('vol d initiation', 'VOL D INITATION'),
+        ('vol decouverte', 'VOL DECOUVERTE'),
+    ]
+    type_service=models.CharField(unique=True,choices=TYPE_SERVICE,max_length=80)
+    prix=models.IntegerField()
+
+    def __str__(self):
+        return self.type_service

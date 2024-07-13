@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .models import News,avions,Profile
-from .forms import CustomUserCreationForm,EmailAuthenticationForm
+from .forms import CustomUserCreationForm,EmailAuthenticationForm,ReservationForm
 from django.contrib.auth.models import User
 def index(request):
     actualité=News.objects.order_by("-id")
@@ -35,7 +35,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    messages.success(request, 'You have been logged out.')
+    return redirect('index')  # Assurez-vous que 'login' est bien le nom de votre vue de connexion
 
 def Register_view(request):
     if request.method == 'POST':
@@ -47,3 +48,22 @@ def Register_view(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'app/register.html', {'form': form})
+
+
+def reserver_view(request):
+    pr=0
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.profile = request.user.profile
+            reservation.prix = form.cleaned_data['prix']
+            reservation.save()
+            messages.success(request, 'Reservation successful')
+            return redirect('index')
+        else:
+            messages.error(request, 'Form is not valid')
+    else:
+        form = ReservationForm()
+       
+    return render(request, 'app/reserver.html', {'form': form,'pr':pr})
