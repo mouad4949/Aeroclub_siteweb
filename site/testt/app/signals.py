@@ -1,12 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from .models import Profile, Membership
-
-@receiver(post_save, sender=User)
-def create_profile_and_membership(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+from .models import Profile, Membre, Client
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
@@ -15,11 +10,22 @@ def save_profile(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Profile)
 def create_or_update_membership(sender, instance, created, **kwargs):
-    if instance.type == 'membre':  # Vérifiez si le type est membre
+    if instance.type == 'membre':
         if created:
-            Membership.objects.create(profile=instance)
+            Membre.objects.get_or_create(profile=instance)
         else:
-            if not hasattr(instance, 'membership'):
-                Membership.objects.create(profile=instance)
+            if hasattr(instance, 'membre'):
+                instance.membre.save()
             else:
-                instance.membership.save()
+                Membre.objects.get_or_create(profile=instance)
+
+@receiver(post_save, sender=Profile)
+def create_or_update_client(sender, instance, created, **kwargs):
+    if instance.type == 'client':
+        if created:
+            Client.objects.get_or_create(profile=instance)
+        else:
+            if hasattr(instance, 'client'):
+                instance.client.save()
+            else:
+                Client.objects.get_or_create(profile=instance)

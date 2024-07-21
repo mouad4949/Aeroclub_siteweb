@@ -8,14 +8,33 @@
         <form method="POST" class="form-group register-form">
             {% csrf_token %}
             {{ form.as_p }}
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li> erreur dans la selection du {{ field.label }}: {{ field.errors }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if form.non_field_errors %}
+                        <li>{{ form.non_field_errors }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
             <p id="prix-reservation">Prix de la réservation dh: {{ form.initial.prix }} </p>
             <button type="submit" class="btn btn-success register-button">Reserver</button>
         </form>
     </div>
+    
 {% endblock %}
 
 {% block extra_js %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
+    // Fonction définie avant d'être appelée
     function updatePrice() {
         var typeReservation = document.getElementById('id_type_reservation').value;
         var prix = 0;  // Initialisez le prix selon votre logique
@@ -31,7 +50,44 @@
         document.getElementById('prix-reservation').textContent = 'Prix de la réservation : ' + prix;
     }
 
-    // Appeler la fonction pour initialiser le prix au chargement de la page
-    updatePrice();
+    document.addEventListener('DOMContentLoaded', function() {
+        const reservedDates = {{ reserved_dates|safe }};
+
+        flatpickr("#id_date", {
+            minDate: "today",  // Empêche les dates passées
+            enableTime: true,  // Active la sélection d'heure
+            dateFormat: "Y-m-d H:i",
+            inline: true, // Affiche le calendrier inline
+            disable: reservedDates.map(date => new Date(date)), // Désactive les dates/horaires réservés
+            minTime: "09:00",  // Heure minimale
+            maxTime: "20:00",  // Heure maximale
+            time_24hr: true,   // Utilise le format 24h
+            onChange: function(selectedDates, dateStr, instance) {
+                // Filtre les heures déjà réservées pour le jour sélectionné
+                if (selectedDates.length > 0) {
+                    const selectedDate = selectedDates[0];
+                    const reservedHours = reservedDates
+                        .filter(date => {
+                            const reservedDate = new Date(date);
+                            return reservedDate.toDateString() === selectedDate.toDateString();
+                        })
+                        .map(date => {
+                            const reservedDate = new Date(date);
+                            return reservedDate.getHours();
+                        });
+
+                    instance.set('disable', [
+                        function(date) {
+                            // Désactive les heures réservées
+                            return reservedHours.includes(date.getHours());
+                        }
+                    ]);
+                }
+            }
+        });
+
+        // Appeler la fonction pour initialiser le prix au chargement de la page
+        updatePrice();
+    });
 </script>
 {% endblock %}

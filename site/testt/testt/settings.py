@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,6 +26,13 @@ SECRET_KEY = 'django-insecure-)*$oa23_9#m^zz3d+4)vi^_0jiu0flasegs-tj)2+sjtwpdl^_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
+EMAIL_HOST_USER='mouadrguibi900@gmail.com'
+EMAIL_HOST_PASSWORD="obsiedwhesduzvhx"
+DEFAULT_FROM_EMAIL="AEROCLUB <mouadrguibi900@gmail.com>"
 ALLOWED_HOSTS = []
 
 
@@ -39,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sslserver',
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
@@ -138,3 +147,34 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'app.backends.EmailBackend',  # Ajoutez cette ligne
 ]
+
+
+
+#Celery settings
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Casablanca'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'check_avion_disponibility_every_5_minutes': {
+        'task': 'app.tasks.check_avion_disponibility',
+        'schedule': crontab(minute='*/5'),  # Exécute toutes les 5 minutes
+    },
+    'check_pilote_disponibilty_every_5_minutes': {
+        'task':'app.tasks.check_pilotes_disponibilty',
+        'schedule':crontab(minute='*/5'),
+    },
+    'send_email_every_1_minute': {
+        'task':'app.tasks.send_mail_reservation',
+        'schedule':crontab(minute='*/1'),
+    }
+}
+
+CELERY_TIMEZONE = 'Africa/Casablanca'

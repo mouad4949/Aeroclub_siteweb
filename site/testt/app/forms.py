@@ -3,8 +3,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-from .models import Profile,Reservation, Services
-
+from .models import Profile,Reservation, Service,avion
+from django.core.exceptions import ValidationError
+from django.utils.timezone import localtime,timedelta
 class CustomUserCreationForm(UserCreationForm):
     Prenom = forms.CharField(max_length=30, required=True, help_text='Required')
     Nom = forms.CharField(max_length=30, required=True, help_text='Required')
@@ -42,7 +43,7 @@ class CustomUserCreationForm(UserCreationForm):
                     'date_naissance': self.cleaned_data['date_naissance'],
                     'CIN': self.cleaned_data['CIN'],
                     'Nom': self.cleaned_data['Nom'],
-                    'Prenom': self.cleaned_data['Prenom'],
+                    'prenom': self.cleaned_data['Prenom'],
                     'age': self.cleaned_data['age']
                 }
             )
@@ -55,7 +56,7 @@ class CustomUserCreationForm(UserCreationForm):
                 profile.date_naissance = self.cleaned_data['date_naissance']
                 profile.CIN = self.cleaned_data['CIN']
                 profile.Nom = self.cleaned_data['Nom']
-                profile.Prenom = self.cleaned_data['Prenom']
+                profile.prenom = self.cleaned_data['Prenom']
                 profile.age = self.cleaned_data['age']
                 profile.save()
         return user
@@ -70,27 +71,55 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 class ReservationForm(forms.ModelForm):
     date = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local'}))
-
+    
     class Meta:
         model = Reservation
-        fields = ['type_reservation', 'date']
+        fields = ['type_reservation', 'date', 'av','duree']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Ajouter des classes CSS Bootstrap aux champs du formulaire
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control'})
         self.fields['type_reservation'].widget.attrs.update({'class': 'form-control', 'onchange': 'updatePrice()'})
 
+        # Récupérer les avions disponibles
+        available_avions = avion.objects.filter(Disponibilité=True)
+
+        # Préparer les choix pour le champ av
+        choix_de_place = [(av.id, f"{av.nom} - {av.Nombres_de_places} places") for av in available_avions]
+        
+        # Assigner les choix au champ av
+        self.fields['av'].choices = choix_de_place
+
+    def clean_date(self):
+        date = self.cleaned_data.get('date')
+
+        # Convertir la date au fuseau horaire local si nécessaire
+        date = localtime(date)
+
+        # Vérifier s'il y a une réservation dans l'heure avant ou après la date sélectionnée
+        delta = timedelta(hours=1)
+        if Reservation.objects.filter(
+            date__gte=date - delta,
+            date__lte=date + delta,
+            Status='validé',  # Ajoutez cette condition pour filtrer par statut
+        ).exists():
+            raise ValidationError("Il y a une autre réservation validée dans cette heure, veuillez choisir une autre horaire.")
+
+        return date
 
     def clean(self):
         cleaned_data = super().clean()
         type_reservation = cleaned_data.get('type_reservation')
-        
+
         if type_reservation:
             try:
-                service = Services.objects.get(type_service=type_reservation)
+                service = Service.objects.get(type_service=type_reservation)
                 cleaned_data['prix'] = service.prix
-            except Services.DoesNotExist:
+            except Service.DoesNotExist:
                 self.add_error('type_reservation', 'Invalid type of reservation')
+
         return cleaned_data
+
+        
+       

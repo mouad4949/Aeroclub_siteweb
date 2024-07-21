@@ -423,7 +423,11 @@
 				<div class="cardserv-body">
 					<h3 class="cardserv-title">VOL DE DECOUVERTE</h3>
 					<p class="cardserv-text">Explorez la zone de Casablanca-Tit Melil,Le vol de baptême sera réalisé par un pilote d'avion expérimenté et compétent.En seulement 30 minutes de vol, vous pourrez admirer des magnifiques panoramas de Casablanca en vue depuis le ciel.Vous quittez avec une multitude de souvenirs.</p>
-					<a href="#">Learn More</a>
+					{% if user.is_authenticated %}
+                    <a href="{% url 'reserver' %}">Reserver</a>
+                    {% else %}
+                    <a href="{% url 'login' %}">Reserver</a>
+                    {% endif %}
 				</div>
 			</div>
 			<div class="cardserv">
@@ -432,7 +436,11 @@
 					<h3 class="cardserv-title">VOL D'INITIATION</h3>
 					<p class="cardserv-text">Le vol d'initiation vous donne la possibilité de prendre les commandes d'un avion à votre arrivée en compagnie d'un instructeur.Après 45 minutes de cours au sol, embarquez pour un vol de 30 minutes qui se déroulera de la manière suivante :
 					Introduction générale de l'avion. Introduction générale de l'équipement à bord. Introduction à la manipulation de l'avion au sol. Introduction au déroulement du vol. Décollage, vol horizontal, virages, descente et atterrisage.</p>
-					<a href="#">Learn More</a>
+					{% if user.is_authenticated %}
+                    <a href="{% url 'reserver' %}">Reserver</a>
+                    {% else %}
+                    <a href="{% url 'login' %}">Reserver</a>
+                    {% endif %}
 				</div>
 			</div>
 		</div>
@@ -508,11 +516,11 @@
                             <div class="testimonial-description">
                                 <div class="testimonial-info">
                                     <div class="testimonial-img">
-                                        <img src="../../static/images/{{ pilote.image }}" alt="clients">
+                                        <img src="../../static/images/{{ pilote.pilote.membre.image }}" alt="clients">
                                     </div><!--/.testimonial-img-->
                                     <div class="testimonial-person">
-                                        <h2>{{ pilote.prenom }} {{ pilote.Nom }}</h2>
-                                        <h4>{{ pilote.type_pilote }}</h4>
+                                        <h2>{{ pilote.pilote.membre.profile.prenom }} {{ pilote.pilote.membre.profile.Nom }}</h2>
+                                        <h4>{{ pilote.type }}</h4>
                                         <div class="testimonial-person-star">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
