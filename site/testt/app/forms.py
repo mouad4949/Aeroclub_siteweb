@@ -70,11 +70,13 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 class ReservationForm(forms.ModelForm):
-    date = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local'}))
-    
     class Meta:
         model = Reservation
-        fields = ['type_reservation', 'date', 'av','duree']
+        fields = ['type_reservation', 'av', 'date_depart', 'date_arrivé','payé_par_pack']
+        widgets = {
+            'date_depart': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'date_arrivé': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -91,25 +93,36 @@ class ReservationForm(forms.ModelForm):
         # Assigner les choix au champ av
         self.fields['av'].choices = choix_de_place
 
-    def clean_date(self):
-        date = self.cleaned_data.get('date')
-
-        # Convertir la date au fuseau horaire local si nécessaire
-        date = localtime(date)
-
-        # Vérifier s'il y a une réservation dans l'heure avant ou après la date sélectionnée
-        delta = timedelta(hours=1)
-        if Reservation.objects.filter(
-            date__gte=date - delta,
-            date__lte=date + delta,
-            Status='validé',  # Ajoutez cette condition pour filtrer par statut
-        ).exists():
-            raise ValidationError("Il y a une autre réservation validée dans cette heure, veuillez choisir une autre horaire.")
-
-        return date
-
     def clean(self):
         cleaned_data = super().clean()
+        date_depart = cleaned_data.get('date_depart')
+        date_arrivé = cleaned_data.get('date_arrivé')
+        av = cleaned_data.get('av')
+
+        # Log pour vérifier les valeurs nettoyées
+        print(f'Date de départ: {date_depart}, Date d\'arrivée: {date_arrivé}')
+
+        if date_depart and date_arrivé:
+            if date_arrivé <= date_depart:
+                raise ValidationError("La date d'arrivée doit être après la date de départ.")
+
+            # Calculer la durée
+            duree = (date_arrivé - date_depart).total_seconds() / 3600*60  # en heures
+            cleaned_data['duree'] = duree
+
+            # Vérifier si l'avion est déjà réservé pendant cette période
+            overlapping_reservations = Reservation.objects.filter(
+                av=av,
+                Status='validé',
+                date_depart__lt=date_arrivé,
+                date_arrivé__gt=date_depart
+            ).exclude(id=self.instance.id)
+
+            if overlapping_reservations.exists():
+                raise ValidationError(
+                    "Cet avion est déjà réservé pendant la période choisie. Veuillez sélectionner un autre avion ou modifier les horaires."
+                )
+
         type_reservation = cleaned_data.get('type_reservation')
 
         if type_reservation:
@@ -120,6 +133,8 @@ class ReservationForm(forms.ModelForm):
                 self.add_error('type_reservation', 'Invalid type of reservation')
 
         return cleaned_data
+
+
 
         
        

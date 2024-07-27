@@ -45,15 +45,25 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Pack(models.Model):
+    
+    type=models.CharField(max_length=80)
+    prix=models.IntegerField()
+    Minutes=models.IntegerField()
+    def __str__(self):
+        return self.type
+        
 class Membre(models.Model):
     CHOIX_STATUS = [
         ('active', 'Active'),
         ('Inactive', 'Inactive'),
     ]
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    pack=models.OneToOneField(Pack,on_delete=models.CASCADE,null=True)
     date_abonnement = models.DateField(auto_now_add=True,null=True)
     montant_abonnement = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     status = models.CharField(max_length=15, choices=CHOIX_STATUS, default='active')
+    solde=models.IntegerField(null=True)
     image = models.CharField(max_length=30,null=True)
     
     def __str__(self):
@@ -66,12 +76,6 @@ class Client(models.Model):
     def __str__(self):
         return  self.profile.user.username
     
-    
-
-
-
-
-
 class Service(models.Model):
     TYPE_SERVICE= [
         ('vol d initiation', 'VOL D INITATION'),
@@ -123,32 +127,41 @@ class Reservation(models.Model):
         ('en attente','EN ATTENTE'),
         ('validé','VALIDÉ'),
     ]
-    DUREE_CHOICES = [
-        (5, '5 minutes'),
-        (10, '10 minutes'),
-        (15, '15 minutes'),
-        (20, '20 minutes'),
-        (25, '25 minutes'),
-        (30, '30 minutes'),
-        (35, '35 minutes'),
-        (40, '40 minutes'),
-        (45, '45 minutes'),
-        (50, '50 minutes'),
-        (55, '55 minutes'),
-        (60, '60 minutes'),
+    PAIEMENT_CHOIX= [
+        ('payé','PAYÉ'),
+        ('impayé','IMPAYÉ'),
+        ('annulé','ANNULÉ'),
     ]
+    
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)  # Utilisez ForeignKey au lieu de OneToOneField
     type_reservation=models.CharField(max_length=80,choices=TYPE_RESERVATION)
     prix=models.IntegerField()
-    date = models.DateTimeField()
-    duree = models.IntegerField(choices=DUREE_CHOICES,null=True)
+    date_depart = models.DateTimeField(null=True)
+    date_arrivé =models.DateTimeField(null=True)
+    duree = models.IntegerField(null=True)
     date_de_reservation = models.DateTimeField(default=timezone.now)
     Nbrs_places=models.IntegerField(null=True)
     av=models.ForeignKey(avion,on_delete=models.CASCADE,null=True)
     pilote=models.ForeignKey(Pilotes_Instructeur,on_delete=models.CASCADE,null=True)
     Status=models.CharField(max_length=80,choices=STATUS_CHOIX,default="en attente")   
     Sent=models.BooleanField(default=0)
-
+    paiement=models.CharField(max_length=80,choices=PAIEMENT_CHOIX,default="impayé")
+    payé_par_pack=models.BooleanField(default=0)
 
     def __str__(self):
         return self.profile.user.username
+    
+class Biens_Reservations(models.Model):
+    TYPE_CHOIX =[
+        ('chéque','Chéque'),
+        ('espèce','Espèce'),
+        ('Virement','Virement'),
+    ]
+    reservation=models.OneToOneField(Reservation, on_delete=models.CASCADE)
+    type_paiement=models.CharField(max_length=80,null=True,choices=TYPE_CHOIX)
+    prix=models.IntegerField(null=True)
+    libellé=models.TextField(null=True)
+    
+    def __str__(self):
+        return f"{self.reservation.profile.prenom}{self.reservation.profile.Nom}"
+    

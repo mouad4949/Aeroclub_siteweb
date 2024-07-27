@@ -36,7 +36,7 @@ def send_mail_reservation(self):
             f"Nous avons le plaisir de vous informer que votre réservation a été validée !\n\n"
             f"Voici les détails de votre réservation :\n"
             f"Type de réservation : {reservation.type_reservation}\n"
-            f"Date et heure : {reservation.date}\n"
+            f"Date et heure de depart : {reservation.date_depart}\n"
             f"Durée : {reservation.duree} minutes\n"
             f"Avion réservé : {reservation.av.nom}\n"
             f"Pilote instructeur : {reservation.pilote.pilote.membre.profile.prenom} {reservation.pilote.pilote.membre.profile.Nom}\n"

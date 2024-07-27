@@ -1,0 +1,83 @@
+/* Navbar CSS */
+.navbar {
+    background-color: #a7a7a7;
+    border-bottom: 2px solid #2980b9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .navbar-brand {
+    color: #b9340b;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 15px 20px;
+    float: left; /* Positionne la marque à gauche */
+}
+
+.navbar .navbar-brand span {
+    color: #e74c3c;
+}
+.navbar-brand :hover{
+    color:red;
+}
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Utilise Flexbox pour aligner les éléments horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
+    justify-content: flex-end; /* Aligne les éléments à droite */
+    flex-wrap: nowrap; /* Empêche les éléments de passer à la ligne */
+    float: right; /* Aligne les éléments à droite */
+}
+
+.navbar-nav > li {
+    margin-left: 15px; /* Espace entre les éléments */
+}
+
+.navbar-nav > li > a {
+    color: black;
+    font-size: 25px;
+    padding: 15px 20px;
+    transition: color 0.3s ease-in-out;
+    text-decoration: none; /* Supprime la sous-ligne des liens */
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    color: #e74c3c;
+    background-color: transparent;
+}
+
+.navbar-nav > li.active > a {
+    color: #e74c3c;
+    background-color: transparent;
+}
+
+.navbar-toggle {
+    border: none;
+    background: transparent;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #ecf0f1;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        border-bottom: none;
+    }
+
+    .navbar-nav {
+        display: block; /* Revert to vertical layout on mobile */
+    }
+
+    .navbar-nav > li {
+        display: block; /* Revert to block layout on mobile */
+    }
+
+    .navbar-nav > li > a {
+        color: #ecf0f1;
+        padding: 10px 15px;
+        display: block; /* Ensures full-width clickable links */
+    }
+}
