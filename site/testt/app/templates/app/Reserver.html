@@ -118,9 +118,9 @@
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
                         {% if profile.type == "membre" %}
                         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li class="scroll active"><a href="{% url 'index'%}">home</a></li>						
-                            <li class="scroll"><a href="#" class="nav-link">Profil</a></li>
-                            <li class="scroll"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                            <li class="scroll active"><a href="{% url 'app:index'%}">home</a></li>						
+                            <li class="scroll"><a href="{% url 'app:profile' %}" class="nav-link">Profil</a></li>
+                            <li class="scroll"><a href="{% url 'app:logout' %}" class="nav-link">Logout</a></li>
                         </ul>    
         {% else %}
         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
@@ -138,7 +138,7 @@
     </section>
     <div class="register-container">
         <h2 class="register-title">Reserver</h2>
-        <form id="reservation-form" method="POST" class="form-group register-form" action="{% url 'reserver' %}">
+        <form id="reservation-form" method="POST" class="form-group register-form" action="{% url 'app:reserver' %}">
             {% csrf_token %}
             {{ form.as_p }}
             {% if form.errors %}
@@ -155,9 +155,8 @@
                 </ul>
             </div>
             {% endif %}
-            {% if profile.type == "client" %}
             <p id="prix-reservation">Prix de la réservation dh: {{ form.initial.prix }}</p>
-            {% else %}
+            {% if profile.type == "membre" %}
                 {% if membre.solde == None%}
                 <p>Votre solde restante de votre pack: 0  minutes</p>
                 {% else %}

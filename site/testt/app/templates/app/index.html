@@ -317,8 +317,8 @@
                             <li class="scroll"><a href="#pilotes">Pilotes</a></li>
                             <li class="scroll"><a href="#blog">Actualités</a></li>
                             <li class="scroll"><a href="#contact">contact</a></li>
-                            <li class="scroll"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
-                            <li><a href="{% url 'reserver' %}">Reserver</a></li>
+                            <li class="scroll"><a href="{% url 'app:logout' %}" class="nav-link">Logout</a></li>
+                            <li><a href="{% url 'app:reserver' %}">Reserver</a></li>
                 
                             
                         </ul>    
@@ -331,7 +331,7 @@
             <li class="scroll"><a href="#pilotes">Pilotes</a></li>
             <li class="scroll"><a href="#blog">Actualités</a></li>
             <li class="scroll"><a href="#contact">contact</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'app:login' %}">Login</a></li>
         </ul>
         {% endif %}
                             
@@ -426,9 +426,9 @@
 					<h3 class="cardserv-title">VOL DE DECOUVERTE</h3>
 					<p class="cardserv-text">Explorez la zone de Casablanca-Tit Melil,Le vol de baptême sera réalisé par un pilote d'avion expérimenté et compétent.En seulement 30 minutes de vol, vous pourrez admirer des magnifiques panoramas de Casablanca en vue depuis le ciel.Vous quittez avec une multitude de souvenirs.</p>
 					{% if user.is_authenticated %}
-                    <a href="{% url 'reserver' %}">Reserver</a>
+                    <a href="{% url 'app:reserver' %}">Reserver</a>
                     {% else %}
-                    <a href="{% url 'login' %}">Reserver</a>
+                    <a href="{% url 'app:login' %}">Reserver</a>
                     {% endif %}
 				</div>
 			</div>
@@ -439,9 +439,9 @@
 					<p class="cardserv-text">Le vol d'initiation vous donne la possibilité de prendre les commandes d'un avion à votre arrivée en compagnie d'un instructeur.Après 45 minutes de cours au sol, embarquez pour un vol de 30 minutes qui se déroulera de la manière suivante :
 					Introduction générale de l'avion. Introduction générale de l'équipement à bord. Introduction à la manipulation de l'avion au sol. Introduction au déroulement du vol. Décollage, vol horizontal, virages, descente et atterrisage.</p>
 					{% if user.is_authenticated %}
-                    <a href="{% url 'reserver' %}">Reserver</a>
+                    <a href="{% url 'app:reserver' %}">Reserver</a>
                     {% else %}
-                    <a href="{% url 'login' %}">Reserver</a>
+                    <a href="{% url 'app:login' %}">Reserver</a>
                     {% endif %}
 				</div>
 			</div>
@@ -700,7 +700,7 @@
                 console.log($(this).attr('href'));
             });
 
-            $('a[href="{% url 'logout' %}"]').on('click', function(e) {
+            $('a[href="{% url 'app:logout' %}"]').on('click', function(e) {
                 e.preventDefault();
                 console.log('Logout link clicked');
                 window.location.href = $(this).attr('href');

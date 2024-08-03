@@ -1,0 +1,327 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <!-- meta data -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!--font-family-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- title of site -->
+    <title>Royal Aeroclub de Casablanca</title>
+
+    <!-- For favicon png -->
+
+
+    <!--font-awesome.min.css-->
+    <!--animate.css-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/linearicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!--flaticon.css-->
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+
+    <!--slick.css-->
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+
+    <!--bootstrap.min.css-->
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="{% static 'css/bootsnav.css' %}">
+
+    <!--style.css-->
+
+
+    <!--responsive.css-->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <style>
+        .body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            background-color: white;
+            width: 100%;
+            max-width: 2000px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+        }
+        h1{
+            text-align:center;
+            padding-bottom:40px;
+        }
+        h1, h2 {
+            color: #333;
+            text-align:center;
+            padding-bottom:40px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            display: none;
+        }
+
+        .tab.active {
+            display: block;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: black;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .tab-button.active, .tab-button:hover {
+            background-color: red;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+
+<body>
+    <section class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+                <div class="container">
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                        <!-- <img src="assets/images/aerro.png" alt="Aeroclub Casablanca" height="70" width="100" class="navbar-brand-img"> -->
+                        <a class="navbar-brand">Aeroclub<span>Casablanca</span></a>
+                    </div><!--/.navbar-header-->
+                    <!-- End Header Navigation -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        {% if profile.type == "membre" %}
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class="scroll active"><a href="{% url 'app:index'%}">home</a></li>
+                            <li class="scroll"><a href="{% url 'app:profile' %}" class="nav-link">Profil</a></li>
+                            <li class="scroll"><a href="{% url 'app:logout' %}" class="nav-link">Logout</a></li>
+                        </ul>
+                        {% else %}
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class="scroll active"><a href="{% url 'index'%}">home</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            </nav>
+        </div><!--/.header-area-->
+        <div class="clearfix"></div>
+    </section>
+<main class="body">
+    <div class="dashboard">
+        <h1>Bienvenue, {{ profile.prenom }} {{ profile.Nom }}</h1>
+
+        <!-- Onglets de navigation -->
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab('info')">Informations</button>
+            <button class="tab-button" onclick="openTab('membership')">Adhésion</button>
+            <button class="tab-button" onclick="openTab('packs')">Packs</button>
+            <button class="tab-button" onclick="openTab('reservations')">Mes reservations</button>
+        </div>
+
+        <!-- Informations du Profil -->
+        <div id="info" class="tab active">
+            <h2>Informations du Profil</h2>
+            <ul>
+                <li><strong>CIN:</strong> {{ profile.CIN }}</li>
+                <li><strong>Téléphone:</strong> {{ profile.tel }}</li>
+                <li><strong>Nationalité:</strong> {{ profile.Nationalité }}</li>
+                <li><strong>Domicile:</strong> {{ profile.Domicile }}</li>
+                <li><strong>Ville:</strong> {{ profile.Ville }}</li>
+                <li><strong>Date de Naissance:</strong> {{ profile.date_naissance }}</li>
+                <li><strong>Âge:</strong> {{ profile.age }}</li>
+            </ul>
+        </div>
+
+        <!-- Informations d'Adhésion -->
+        <div id="membership" class="tab">
+            <h2>Informations d'Adhésion</h2>
+            <ul>
+                <li><strong>Pack:</strong> {{ membre.pack.type }}</li>
+                <li><strong>Date d'Abonnement:</strong> {{ membre.date_abonnement }}</li>
+                <li><strong>Date de l'expiration d'abonnement:</strong> {{ membre.date_expiration }}</li>
+                <li><strong>Montant de l'Abonnement:</strong> {{ membre.montant_abonnement }} dh</li>
+                <li><strong>Status:</strong> {{ membre.status }}</li>
+                <li><strong>Solde des Minutes:</strong> {{ membre.solde }} minutes</li>
+            </ul>
+        </div>
+
+        <!-- Packs Disponibles -->
+        <div id="packs" class="tab">
+            <h2>Packs Disponibles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Prix (dh)</th>
+                        <th>Minutes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pack in packs %}
+                    <tr>
+                        <td>{{ pack.type }}</td>
+                        <td>{{ pack.prix }}</td>
+                        <td>{{ pack.Minutes }}</td>
+                        <td>
+                            <button onclick="acheterPack('{{ pack.id }}')">Acheter</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Mes reservations -->
+        <div id="reservations" class="tab">
+            <h2>Mes reservations:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type de reservation</th>
+                        <th>Prix (dh)</th>
+                        <th>durée</th>
+                        <th>date de depart</th>
+                        <th>date d'arrivée</th>
+                        <th>avion</th>
+                        <th>Status de vol</th>
+                        <th>Status de paiement</th>
+                        <th>Payé par pack</th>
+                        <th>Payer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rs in reservation %}
+                    <tr>
+                        <td>{{ rs.type_reservation }}</td>
+                        {% if rs.payé_par_pack%}
+                            <td>--</td>
+                        {% else %}
+                            <td>{{ rs.prix }}</td>
+                        {% endif %}
+                        <td>{{ rs.duree }} minutes</td>
+                        <td>{{ rs.date_depart }}</td>
+                        <td>{{ rs.date_arrivé }}</td>
+                        <td>{{ rs.av.nom }}--({{ rs.av.Nombres_de_places }} places)</td>
+                        <td>{{ rs.Status }}</td>
+                        <td>{{ rs.paiement }}</td>
+                        {% if rs.payé_par_pack %}
+                            <td>Oui</td>
+                        {% else %}
+                            <td>Non</td>
+                        {% endif %}
+                        {% if rs.Status == "validé" and rs.paiement == "impayé"%}
+                        <td>
+                            
+                            <a href="{% url 'app:checkout' rs.id %}">Payer</a>
+                            
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            // Masquer tous les onglets
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+
+            // Supprimer la classe active de tous les boutons
+            var buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(function(button) {
+                button.classList.remove('active');
+            });
+
+            // Afficher l'onglet sélectionné
+            document.getElementById(tabName).classList.add('active');
+
+            // Ajouter la classe active au bouton sélectionné
+            event.target.classList.add('active');
+        }
+
+        function acheterPack(packId) {
+            // Logic to handle pack purchase
+            alert('Acheter le pack: ' + packId);
+            // Vous pouvez ajouter ici un appel AJAX pour gérer l'achat du pack
+        }
+    </script>
+</main>
+</body>
+</html>
