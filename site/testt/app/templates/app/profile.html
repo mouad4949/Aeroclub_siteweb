@@ -158,18 +158,12 @@
                     <!-- End Header Navigation -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                        {% if profile.type == "membre" %}
                         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                             <li class="scroll active"><a href="{% url 'app:index'%}">home</a></li>
-                            <li class="scroll"><a href="{% url 'app:profile' %}" class="nav-link">Profil</a></li>
+                            <li class="scroll"><a href="{% url 'app:reserver' %}" class="nav-link">Reserver</a></li>
                             <li class="scroll"><a href="{% url 'app:logout' %}" class="nav-link">Logout</a></li>
                         </ul>
-                        {% else %}
-                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li class="scroll active"><a href="{% url 'index'%}">home</a></li>
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
-                        </ul>
-                        {% endif %}
+                       
 
 
                     </div>
@@ -185,8 +179,10 @@
         <!-- Onglets de navigation -->
         <div class="tab-buttons">
             <button class="tab-button active" onclick="openTab('info')">Informations</button>
+            {% if profile.type == "membre"%}
             <button class="tab-button" onclick="openTab('membership')">Adhésion</button>
             <button class="tab-button" onclick="openTab('packs')">Packs</button>
+            {% endif %}
             <button class="tab-button" onclick="openTab('reservations')">Mes reservations</button>
         </div>
 
@@ -205,6 +201,7 @@
         </div>
 
         <!-- Informations d'Adhésion -->
+         
         <div id="membership" class="tab">
             <h2>Informations d'Adhésion</h2>
             <ul>
@@ -216,7 +213,7 @@
                 <li><strong>Solde des Minutes:</strong> {{ membre.solde }} minutes</li>
             </ul>
         </div>
-
+        
         <!-- Packs Disponibles -->
         <div id="packs" class="tab">
             <h2>Packs Disponibles</h2>

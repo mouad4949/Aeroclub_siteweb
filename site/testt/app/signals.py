@@ -54,4 +54,4 @@ def update_solde_on_pack_change(sender, instance, **kwargs):
             # Décrémentez le solde du membre par la durée de la réservation
             membre.solde -= instance.duree
             membre.save()
-            
+

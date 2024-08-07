@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .models import New,avion,Pilotes_Instructeur,Reservation,Profile,Membre,Pack,Biens_Reservations
-from .forms import CustomUserCreationForm,EmailAuthenticationForm,ReservationForm
+from .forms import CustomUserCreationForm,EmailAuthenticationForm,ReservationForm,ReservationFormClient
 from django.contrib.auth.models import User
 from .tasks import check_avion_disponibility,send_mail_reservation
 from django.http.response import HttpResponse
@@ -30,6 +30,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
 from django.templatetags.static import static
+
+
 def process_date(date):
     if date.tzinfo is None or date.tzinfo.utcoffset(date) is None:
         aware_date = make_aware(date)
@@ -81,6 +83,26 @@ def login_view(request):
         form = EmailAuthenticationForm()
     return render(request, 'app/login.html', {'form': form})
 
+
+def login_mail(request):
+    if request.method == 'POST':
+        form = EmailAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('app:profile')  # Rediriger vers la page d'accueil après une connexion réussie
+            else:
+                messages.error(request, 'Invalid email or password')
+        else:
+            messages.error(request, 'Formulaire n\'est pas valide')
+            print(form.errors)  # Pour le débogage
+    else:
+        form = EmailAuthenticationForm()
+    return render(request, 'app/login.html', {'form': form})
+
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out.')
@@ -107,16 +129,25 @@ def reserver_view(request):
         membre = None
 
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        if membre is not None:
+            form = ReservationForm(request.POST, user_profile=profile)
+        else:
+            form = ReservationFormClient(request.POST)
+
         if form.is_valid():
             reservation = form.save(commit=False)
-            # Vérifiez et ajustez la date d'arrivée
             date_arrivé = form.cleaned_data.get('date_arrivé')
+            date_dep = form.cleaned_data.get('date_depart')
+
+            # Assurez-vous que les dates sont conscientes du fuseau horaire
             if date_arrivé and (date_arrivé.tzinfo is None or date_arrivé.tzinfo.utcoffset(date_arrivé) is None):
                 date_arrivé = timezone.make_aware(date_arrivé)
+            if date_dep and (date_dep.tzinfo is None or date_dep.tzinfo.utcoffset(date_dep) is None):
+                date_dep = timezone.make_aware(date_dep)
 
+            reservation.date_depart = date_dep
             reservation.date_arrivé = date_arrivé
-            reservation.profile = request.user.profile
+            reservation.profile = profile
             reservation.prix = form.cleaned_data['prix']
             reservation.av = form.cleaned_data['av']
             reservation.Nbrs_places = reservation.av.Nombres_de_places
@@ -126,7 +157,8 @@ def reserver_view(request):
             if reservation.payé_par_pack:
                 if membre and membre.solde >= reservation.duree:
                     reservation.paiement = 'payé'  # Marquer comme payé
-                    
+                    membre.solde -= reservation.duree  # Déduire les minutes du solde
+                    membre.save()
                     reservation.save()
                     return JsonResponse({'success': True})
                 else:
@@ -143,7 +175,7 @@ def reserver_view(request):
                 'error_message': form.errors.as_text()  # Convertit les erreurs en texte pour l'affichage
             })
     else:
-        form = ReservationForm()
+        form = ReservationForm(user_profile=profile) if membre else ReservationFormClient()
 
     # Logique pour les dates réservées
     all_reserved_dates = Reservation.objects.filter(Status='validé')
@@ -165,20 +197,27 @@ def reserver_view(request):
         'membre': membre
     })
 
-
-
 @login_required
 def profile(request):
     profile = Profile.objects.get(user=request.user)
-    membre = Membre.objects.get(profile=profile)
+    try:
+        membre = Membre.objects.get(profile=profile)
+    except Membre.DoesNotExist:
+        membre = None
     reservation = Reservation.objects.filter(profile=profile)  # Utilisation de filter pour obtenir toutes les réservations
     packs = Pack.objects.all()
-    return render(request, 'app/profile.html', {
-        'profile': profile,
-        'membre': membre,
-        'packs':packs,
-        'reservation':reservation
-    })
+    if membre:
+        return render(request, 'app/profile.html', {
+            'profile': profile,
+            'membre': membre,
+            'packs':packs,
+            'reservation':reservation
+        })
+    else:
+        return render(request, 'app/profile.html', {
+            'profile': profile,
+            'reservation':reservation
+        })
 
 
 

@@ -72,7 +72,77 @@ class EmailAuthenticationForm(AuthenticationForm):
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['type_reservation', 'av', 'date_depart', 'date_arrivé','payé_par_pack']
+        fields = ['type_reservation', 'av', 'date_depart', 'date_arrivé', 'payé_par_pack']
+        widgets = {
+            'date_depart': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'date_arrivé': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        user_profile = kwargs.pop('user_profile', None)
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+        self.fields['type_reservation'].widget.attrs.update({'class': 'form-control', 'onchange': 'updatePrice()'})
+
+        # Récupérer les avions disponibles
+        available_avions = avion.objects.filter(Disponibilité=True)
+
+        # Préparer les choix pour le champ av
+        choix_de_place = [(av.id, f"{av.nom} - {av.Nombres_de_places} places") for av in available_avions]
+        
+        # Assigner les choix au champ av
+        self.fields['av'].choices = choix_de_place
+
+        # Afficher ou masquer le champ 'payé_par_pack' en fonction du profil
+        if user_profile and user_profile.type == 'membre':
+            self.fields['payé_par_pack'].required = True
+        else:
+            self.fields.pop('payé_par_pack')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_depart = cleaned_data.get('date_depart')
+        date_arrivé = cleaned_data.get('date_arrivé')
+        av = cleaned_data.get('av')
+
+        if date_depart and date_arrivé:
+            if date_arrivé <= date_depart:
+                raise ValidationError("La date d'arrivée doit être après la date de départ.")
+
+            # Calculer la durée
+            duree = (date_arrivé - date_depart).total_seconds() / 3600*60  # en heures
+            cleaned_data['duree'] = duree
+
+            # Vérifier si l'avion est déjà réservé pendant cette période
+            overlapping_reservations = Reservation.objects.filter(
+                av=av,
+                Status='validé',
+                date_depart__lt=date_arrivé,
+                date_arrivé__gt=date_depart
+            ).exclude(id=self.instance.id)
+
+            if overlapping_reservations.exists():
+                raise ValidationError(
+                    "Cet avion est déjà réservé pendant la période choisie. Veuillez sélectionner un autre avion ou modifier les horaires."
+                )
+
+        type_reservation = cleaned_data.get('type_reservation')
+
+        if type_reservation:
+            try:
+                service = Service.objects.get(type_service=type_reservation)
+                cleaned_data['prix'] = service.prix
+            except Service.DoesNotExist:
+                self.add_error('type_reservation', 'Invalid type of reservation')
+
+        return cleaned_data
+
+    
+class ReservationFormClient(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['type_reservation', 'av', 'date_depart', 'date_arrivé']
         widgets = {
             'date_depart': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'date_arrivé': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

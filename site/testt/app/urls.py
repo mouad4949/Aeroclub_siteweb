@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from .views import login_view , logout_view,Register_view,reserver_view,send_mail,profile,generate_pdf
+from .views import login_view , logout_view,Register_view,reserver_view,send_mail,profile,generate_pdf,login_mail
 app_name = 'app'
 urlpatterns = [
     path("test/", send_mail ,name="mail"),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('success/<int:reservation_id>/', views.payment_success, name='success'),
     path('cancel/<int:reservation_id>/', views.payment_cancel, name='cancel'),
     path('download-receipt/<int:reservation_id>/', generate_pdf, name='download_receipt'),
+    path('login_mail/', login_mail, name='login_email'),
 ]

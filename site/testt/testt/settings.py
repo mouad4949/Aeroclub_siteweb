@@ -152,7 +152,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-
+BASE_URL = 'http://localhost:8000'
 #Celery settings
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -187,4 +187,6 @@ paypalrestsdk.configure({
     "client_id": "clienid",
     "client_secret": "client_secret"
 })
+
+
 

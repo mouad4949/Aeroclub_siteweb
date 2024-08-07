@@ -59,13 +59,14 @@ class Membre(models.Model):
         ('Inactive', 'Inactive'),
     ]
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    pack=models.OneToOneField(Pack,on_delete=models.CASCADE,null=True)
+    pack=models.ForeignKey(Pack, on_delete=models.CASCADE,null=True)
     date_abonnement = models.DateField(auto_now_add=True,null=True)
     date_expiration=models.DateField(null=True)
     montant_abonnement = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     status = models.CharField(max_length=15, choices=CHOIX_STATUS, default='active')
     solde=models.IntegerField(null=True)
     image = models.CharField(max_length=30,null=True)
+    
     
     def __str__(self):
         return f'abbonnement pour {self.profile.user.username}'
@@ -148,6 +149,7 @@ class Reservation(models.Model):
     Sent=models.BooleanField(default=0)
     paiement=models.CharField(max_length=80,choices=PAIEMENT_CHOIX,default="impayé")
     payé_par_pack=models.BooleanField(default=0)
+
     def __str__(self):
         return self.profile.user.username
     
